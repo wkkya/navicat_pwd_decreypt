@@ -8,7 +8,7 @@
     ]]></description>
 
     <!-- 指定兼容的 IntelliJ IDEA 版本范围 -->
-    <idea-version since-build="232.1" until-build="999.0" />
+    <idea-version since-build="232.1" until-build="255.*" />
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
