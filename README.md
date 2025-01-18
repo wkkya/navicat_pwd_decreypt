@@ -1,0 +1,2 @@
+# navicat_pwd_decreypt
+navicat连接密码解密插件
