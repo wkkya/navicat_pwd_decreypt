@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '1.15.0'
+}
+
+group = 'com.github.wkkya.npd'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+intellij {
+    version = '2024.2.3' // IntelliJ IDEA 版本
+    type = 'IC' // 社区版
+    plugins = ['com.intellij.java'] // 如果需要其他插件模块，可以在这里添加
+    updateSinceUntilBuild = false // 确保插件兼容性设置正确
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+runIde {
+    // 配置 JBR 版本
+    jbrVariant = "jcef" // 强制使用 JCEF 版本
+    // 配置 JVM 参数
+    jvmArgs = [
+            "-Djcef.enabled=true",
+            "-Dide.browser.jcef.enabled=true",
+            "-Dide.browser.jcef.sandbox.enable=false",
+            "--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED",
+            "-Xmx4096m", "-Xms128m"
+    ]
+    systemProperties = [
+            "idea.log.path": file("build/idea-sandbox/system/log").absolutePath,
+            "ide.browser.jcef.enabled": "true"
+    ]
+}
+
+// 确保所有依赖项被打包到插件 jar 中
+jar {
+    manifest {
+        attributes(
+                'Plugin-Version': '1.0.0',
+                'Plugin-Id': 'navicat-decrypt',
+                'Plugin-Name': 'navicat-decrypt',
+                'Plugin-Description': 'Navicat 密码解密工具',
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = 'exclude' // 或者 'warn'
+}
+
+// 使用 org.jetbrains.intellij 插件自带的 buildPlugin 任务
+assemble.dependsOn(buildPlugin)

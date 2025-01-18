@@ -1,0 +1,37 @@
+<idea-plugin>
+    <id>navicat-decrypt</id>
+    <name>navicat-decrypt</name>
+    <vendor email="wkkyahahaha@gmail.com" url="">wkkya</vendor>
+
+    <description><![CDATA[
+    An IntelliJ plugin designed to view and decrypt Navicat connection passwords, allowing users to securely access and manage their database connection credentials within the IDE.
+    ]]></description>
+
+    <!-- 指定兼容的 IntelliJ IDEA 版本范围 -->
+    <idea-version since-build="232.1" until-build="999.0" />
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+
+    <actions>
+        <!-- 定义一个 action -->
+        <action id="NavicatToolAction"
+                class="com.github.wkkya.npd.action.NavicatToolAction"
+                text="Navicat 密码解密工具"
+                description="打开 Navicat 密码解密工具">
+            <add-to-group group-id="MainToolbarRight" anchor="after" relative-to-action="SaveAll" />
+        </action>
+    </actions>
+
+
+    <applicationListeners>
+        <listener class="com.github.wkkya.npd.ui.ThemeListener" topic="com.intellij.ide.ui.LafManagerListener"/>
+    </applicationListeners>
+
+
+</idea-plugin>
