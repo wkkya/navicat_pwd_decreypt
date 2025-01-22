@@ -34,7 +34,9 @@ public class NavicatToolAction extends AnAction implements DumbAware {
         // 打开 Navicat 密码解密工具弹窗
         SwingUtilities.invokeLater(() -> {
             NavicatDecryptDialog dialog = NavicatDecryptDialog.getInstance();
-            dialog.show(); // 使用 IntelliJ 的 show() 方法显示对话框
+
+            dialog.setVisible(true);//替换为JDK17以上用法
+//            dialog.show(); // 使用 IntelliJ 的 show() 方法显示对话框
         });
     }
 

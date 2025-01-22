@@ -6,6 +6,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Arrays;
+import java.util.HexFormat;
 
 /**
  * Navicat11及以下密码加密解密
@@ -54,7 +55,8 @@ public class Navicat11Cipher extends NavicatChiper {
 
     private static void initIV() {
         try {
-            byte[] initVec = DatatypeConverter.parseHexBinary("FFFFFFFFFFFFFFFF");
+//            byte[] initVec = DatatypeConverter.parseHexBinary("FFFFFFFFFFFFFFFF");
+            byte[] initVec = HexFormat.of().parseHex("FFFFFFFFFFFFFFFF");//替换为JDK17以上用法
             _IV = _Encryptor.doFinal(initVec);
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +123,8 @@ public class Navicat11Cipher extends NavicatChiper {
         try {
             byte[] inData = inputString.getBytes(StandardCharsets.UTF_8);
             byte[] outData = Encrypt(inData);
-            return DatatypeConverter.printHexBinary(outData);
+            //return DatatypeConverter.printHexBinary(outData);
+            return HexFormat.of().formatHex(outData);//替换为JDK17以上用法
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -167,7 +170,8 @@ public class Navicat11Cipher extends NavicatChiper {
     @Override
     public String decryptString(String hexString) {
         try {
-            byte[] inData = DatatypeConverter.parseHexBinary(hexString);
+//            byte[] inData = DatatypeConverter.parseHexBinary(hexString);
+            byte[] inData = HexFormat.of().parseHex(hexString);//替换为JDK17以上用法
             byte[] outData = Decrypt(inData);
             return new String(outData, StandardCharsets.UTF_8);
         } catch (Exception e) {

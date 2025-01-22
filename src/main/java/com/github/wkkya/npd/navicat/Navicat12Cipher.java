@@ -5,6 +5,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
+import java.util.HexFormat;
 
 /**
  * Navicat12及以上密码加密解密
@@ -27,7 +28,8 @@ public class Navicat12Cipher extends NavicatChiper {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, _AesKey, _AesIV);
             byte[] ret = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
-            return DatatypeConverter.printHexBinary(ret);
+//            return DatatypeConverter.printHexBinary(ret);
+            return HexFormat.of().formatHex(ret);//替换为JDK17以上用法
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -39,11 +41,13 @@ public class Navicat12Cipher extends NavicatChiper {
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, _AesKey, _AesIV);
-            byte[] ret = cipher.doFinal(DatatypeConverter.parseHexBinary(ciphertext));
+//            byte[] ret = cipher.doFinal(DatatypeConverter.parseHexBinary(ciphertext));
+
+            byte[] ret = cipher.doFinal(HexFormat.of().parseHex(ciphertext));
             return new String(ret, StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
-            return "密码格式错误！" + e.getMessage();
+            return "加密密码格式错误！";
         }
     }
 }
